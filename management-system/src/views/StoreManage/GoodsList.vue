@@ -10,7 +10,7 @@
       <!-- 货物码 -->
       <el-form-item label="货物码">
         <el-input
-          v-model="searchForm.goodsCoding"
+          v-model="searchForm.goodscoding"
           placeholder="货物码"
         ></el-input>
       </el-form-item>
@@ -31,7 +31,7 @@
     </el-form>
     <el-divider></el-divider>
 
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="tableData" style="width: 100%;">
       <!-- 下拉框 可以展开 -->
       <el-table-column type="expand">
         <template slot-scope="props">
@@ -47,7 +47,7 @@
                 <img
                   width="100"
                   height="100"
-                  style="border-radius: 4px"
+                  style="border-radius: 4px;"
                   :src="serveApi + props.row.imgUrl"
                 />
               </span>
@@ -78,9 +78,9 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDel(scope.row)"
-            >删除</el-button
-          >
+          <el-button size="mini" type="danger" @click="handleDel(scope.row)">
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -99,44 +99,49 @@
 </template>
 
 <script>
-import { getGoodsList, goodsDel } from "@/api/store";
+import { getGoodsList, goodsDel } from '@/api/store'
 
 export default {
   data() {
     return {
-      serveApi: "http://127.0.0.1:5000/upload/goods/",
+      serveApi: 'http://127.0.0.1:5000/upload/goods/',
       // 搜索表格
       searchForm: {
-        goodsCoding: "",
-        goodsName: "",
+        goodscoding: '',
+        goodsName: '',
       },
       // 表格数据
       currentPage: 1,
       total: 0,
       pageSize: 5,
       tableData: [],
-    };
+      warning: '',
+    }
+  },
+
+  created() {
+    this.getGoods()
   },
   methods: {
     // 查询
     search() {
-      this.currentPage = 1;
-      this.getGoods(); // 调用获取列表函数
+      this.currentPage = 1
+      this.getGoods() // 调用获取列表函数
     },
     // 清除
     clear() {
       // 清空整个搜索表单
       this.searchForm = {
-        goodsCoding: "",
-        goodsName: "",
-      };
+        goodscoding: '',
+        goodsName: '',
+      }
       // 请求所有数据
-      this.getGoods();
+      this.getGoods()
     },
     // 当前页码改变
     handleCurrentChange(val) {
-      this.currentPage = val;
-      this.getGoods();
+      this.currentPage = val
+      this.getGoods()
     },
 
     // 获取货物列表
@@ -145,55 +150,58 @@ export default {
       let params = {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
-        goodsCoding: this.searchForm.goodsCoding,
+        goodscoding: this.searchForm.goodscoding,
         goodsName: this.searchForm.goodsName,
-      };
+      }
       // 发送获取货物列表的请求
-      let { total, data } = await getGoodsList(params);
-
+      let { total, data } = await getGoodsList(params)
+      data.forEach((i) => {
+        console.log(i.goodsquantity)
+        if (i.goodsquantity == 1) {
+          i.goodsquantity = '库存告急，请及时补充'
+        }
+      })
       // 赋值渲染
-      this.total = total;
+      this.total = total
       // 数据
-      this.tableData = data;
-      // console.log(data);
+      this.tableData = data
+      console.log(data)
     },
     // 编辑货物
     handleEdit(row) {
       // 把要编辑的货物出存入会话存储
-      window.sessionStorage.setItem("goods", JSON.stringify(row));
+      window.sessionStorage.setItem('goods', JSON.stringify(row))
       // 跳转到货物编辑页面
-      this.$router.push("/home/goodsedit");
+      this.$router.push('/home/goodsedit')
     },
     // 删除
     handleDel(row) {
-      this.$confirm("你确定要删除吗？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+      console.log(row)
+      this.$confirm('你确定要删除吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
       })
         // 确定
         .then(async () => {
-          let { code, msg } = await goodsDel({ id: row.id }); // 发送删除请求
+          let { code, msg } = await goodsDel({ goodsname: row.goodsname }) // 发送删除请求
           // 成功
           if (code === 0) {
             // 刷新列表（重新请求列表数据）
-            this.getGoods();
+            this.getGoods()
           }
           // 失败，响应拦截
         })
         // 取消
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
+            type: 'info',
+            message: '已取消删除',
+          })
+        })
     },
   },
-  created() {
-    this.getGoods();
-  },
-};
+}
 </script>
 
 <style lang="less" scoped>

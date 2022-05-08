@@ -58,7 +58,8 @@ export default {
         leavequantity,
       };
       let { code, msg } = await leaveStore(params);
-      // console.log(code);
+      console.log(params);
+      console.log(code);
       // 发送添加货物的请求
       if (code === 0) {
         this.$router.push("/home/goodslist");

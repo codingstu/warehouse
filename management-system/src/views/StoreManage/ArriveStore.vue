@@ -77,76 +77,82 @@
 </template>
 
 <script>
-import { arriveStore } from "@/api/store";
+import { arriveStore } from '@/api/store'
 
 export default {
   data() {
     return {
-      serverApi: "http://127.0.0.1:5000/upload/goods/", // 货物图片服务器地址
+      serverApi: 'http://127.0.0.1:5000/upload/goods/', // 货物图片服务器地址
       // 货物表格
       arriveStoreForm: {
-        goodscoding: "", //货物码
-        goodsname: "", // 货物名称
-        goodscategory: "", // 货物分类
-        imgUrl: "", // 货物图片地址
-        goodsdesc: "", // 货物描述
-        goodsquantity: "", //货物数量
+        goodscoding: '', //货物码
+        goodsname: '', // 货物名称
+        goodscategory: '', // 货物分类
+        imgUrl: '', // 货物图片地址
+        goodsdesc: '', // 货物描述
+        goodsquantity: '', //货物数量
       },
 
-      formLabelWidth: "120px", // 标签宽度
-    };
+      formLabelWidth: '120px', // 标签宽度
+    }
   },
   methods: {
     // 提交添加表单
     async submitForm() {
-      // 获取值
-      let {
-        goodscoding,
-        goodsname,
-        goodscategory,
-        imgUrl,
-        goodsdesc,
-        goodsquantity,
-      } = this.arriveStoreForm;
+      try {
+        let {
+          goodscoding,
+          goodsname,
+          goodscategory,
+          imgUrl,
+          goodsdesc,
+          goodsquantity,
+        } = this.arriveStoreForm
 
-      // 准备参数对象
-      let params = {
-        goodscoding,
-        goodsname,
-        goodscategory,
-        imgUrl,
-        goodsdesc,
-        goodsquantity,
-      };
-      let { code } = await arriveStore(params); // 发送添加货物的请求
-      if (code === 0) {
-        this.$router.push("/home/goodslist");
+        // 准备参数对象
+        let params = {
+          goodscoding,
+          goodsname,
+          goodscategory,
+          imgUrl,
+          goodsdesc,
+          goodsquantity,
+        }
+        let { code } = await arriveStore(params) // 发送添加货物的请求
+        console.log(params)
+        console.log(code)
+        if (code === 0) {
+          this.$router.push('/home/goodslist')
+        }
+      } catch (error) {
+        console.log(error)
       }
+      // 获取值
     },
 
     // 上传图片成功的回调
     handleAvatarSuccess(res, file) {
-      let { code, imgUrl } = res;
+      let { code, imgUrl } = res
       if (code === 0) {
-        this.arriveStoreForm.imgUrl = imgUrl;
+        this.arriveStoreForm.imgUrl = imgUrl
       }
     },
     // 图片上传之前的处理函数
     beforeAvatarUpload(file) {
-      const isPNG = file.type === "image/png";
-      const isJPG = file.type === "image/jpeg";
-      const isLt4M = file.size / 1024 / 1024 < 4;
+      const isPNG = file.type === 'image/png'
+      const isJPG = file.type === 'image/jpeg'
+      const isLt4M = file.size / 1024 / 1024 < 4
 
       if (!(isPNG || isJPG)) {
-        this.$message.error("上传头像图片只支持 JPG/PNG 格式!");
+        this.$message.error('上传头像图片只支持 JPG/PNG 格式!')
       }
       if (!isLt4M) {
-        this.$message.error("请选择大小小于4MB的图片上传！");
+        this.$message.error('请选择大小小于4MB的图片上传！')
       }
-      return (isPNG || isJPG) && isLt4M;
+      return (isPNG || isJPG) && isLt4M
     },
   },
-};
+}
 </script>
 
 <style lang="less">

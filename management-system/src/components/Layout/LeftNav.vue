@@ -66,14 +66,14 @@ export default {
         },
       },
       // 订单管理
-      {
-        path: "/home/ordermanage",
-        icon: "icon-dingdan",
-        title: "订单管理",
-        meta: {
-          roles: ["super", "general"],
-        },
-      },
+      // {
+      //   path: "/home/ordermanage",
+      //   icon: "icon-dingdan",
+      //   title: "订单管理",
+      //   meta: {
+      //     roles: ["super", "general"],
+      //   },
+      // },
       // 仓库管理
       {
         path: "/home/storemanage",

@@ -76,93 +76,90 @@
 </template>
 
 <script>
-import { goodsEdit } from "@/api/store";
+import { goodsEdit } from '@/api/store'
 
 export default {
   data() {
     return {
-      serverApi: "http://127.0.0.1:5000/upload/goods/", // 商品图片服务器地址
+      serverApi: 'http://127.0.0.1:5000/upload/goods/', // 商品图片服务器地址
       // 商品表格
       arriveStoreForm: {
-        id: "",
-        goodscoding: "", //货物码
-        goodsname: "", // 商品名称
-        goodscategory: "", // 商品分类
-        imgUrl: "", // 商品图片地址
-        goodsdesc: "", // 商品描述
-        goodsquantity: "", //货物数量
+        // id: '', //货物ID
+        goodscoding: '', //货物码
+        goodsname: '', // 商品名称
+        goodscategory: '', // 商品分类
+        imgUrl: '', // 商品图片地址
+        goodsdesc: '', // 商品描述
+        goodsquantity: '', //货物数量
       },
 
-      formLabelWidth: "120px", // 标签宽度
-    };
+      formLabelWidth: '120px', // 标签宽度
+    }
   },
   methods: {
     // 提交添加表单
     async submitForm() {
       // 获取值
       let {
-        id,
         goodscoding,
         goodsname,
         goodscategory,
         imgUrl,
         goodsdesc,
         goodsquantity,
-      } = this.arriveStoreForm;
+      } = this.arriveStoreForm
 
       // 准备参数对象
       let params = {
-        id,
         goodscoding,
         goodsname,
         goodscategory,
         imgUrl,
         goodsdesc,
         goodsquantity,
-      };
-      let { code } = await goodsEdit(params);
-      //   console.log(code);
+      }
+      let { code } = await goodsEdit(params)
+      console.log(code)
       // 发送添加商品的请求
       if (code === 0) {
-        this.$router.push("/home/goodslist");
+        this.$router.push('/home/goodslist')
       }
     },
 
     // 上传图片成功的回调
     handleAvatarSuccess(res, file) {
-      let { code, imgUrl } = res;
+      let { code, imgUrl } = res
       if (code === 0) {
-        this.arriveStoreForm.imgUrl = imgUrl;
+        this.arriveStoreForm.imgUrl = imgUrl
       }
     },
     // 图片上传之前的处理函数
     beforeAvatarUpload(file) {
-      const isPNG = file.type === "image/png";
-      const isJPG = file.type === "image/jpeg";
-      const isLt4M = file.size / 1024 / 1024 < 4;
+      const isPNG = file.type === 'image/png'
+      const isJPG = file.type === 'image/jpeg'
+      const isLt4M = file.size / 1024 / 1024 < 4
 
       if (!(isPNG || isJPG)) {
-        this.$message.error("上传头像图片只能是 JPG/PNG 格式!");
+        this.$message.error('上传头像图片只能是 JPG/PNG 格式!')
       }
       if (!isLt4M) {
-        this.$message.error("上传头像图片大小不能超过 4MB!");
+        this.$message.error('上传头像图片大小不能超过 4MB!')
       }
-      return (isPNG || isJPG) && isLt4M;
+      return (isPNG || isJPG) && isLt4M
     },
   },
 
   created() {
     // 获取本地存储的数据
-    let goods = JSON.parse(window.sessionStorage.getItem("goods"));
-    this.arriveStoreForm.id = goods.id;
-    this.arriveStoreForm.goodscoding = goods.goodscoding;
-    this.arriveStoreForm.goodsname = goods.goodsname;
-    this.arriveStoreForm.goodscategory = goods.goodscategory;
-    this.arriveStoreForm.imgUrl = goods.imgUrl;
-    this.arriveStoreForm.goodsdesc = goods.goodsdesc;
-    this.arriveStoreForm.goodsquantity = goods.goodsquantity;
+    let goods = JSON.parse(window.sessionStorage.getItem('goods'))
+    this.arriveStoreForm.goodscoding = goods.goodscoding
+    this.arriveStoreForm.goodsname = goods.goodsname
+    this.arriveStoreForm.goodscategory = goods.goodscategory
+    this.arriveStoreForm.imgUrl = goods.imgUrl
+    this.arriveStoreForm.goodsdesc = goods.goodsdesc
+    this.arriveStoreForm.goodsquantity = goods.goodsquantity
   },
-};
+}
 </script>
 
 <style lang="less">
