@@ -157,8 +157,8 @@ export default {
       let { total, data } = await getGoodsList(params)
       data.forEach((i) => {
         console.log(i.goodsquantity)
-        if (i.goodsquantity == 1) {
-          i.goodsquantity = '库存告急，请及时补充'
+        if (i.goodsquantity <= 10) {
+          i.goodsquantity += '(库存告急，请及时补充)'
         }
       })
       // 赋值渲染
