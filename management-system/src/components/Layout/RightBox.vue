@@ -7,25 +7,25 @@
       <!-- 路由出口 -->
       <router-view></router-view>
     </el-main>
-    <el-footer
-      ><div class="copyright">
+    <el-footer>
+      <div class="copyright">
         <h1>
-          &copy;毕业设计&nbsp;版权所有：四川师范大学&nbsp;物理与电子工程学院&nbsp;2016级&nbsp;顾郑凯
+          &copy;毕业设计&nbsp;江苏大学京江学院&nbsp;电气信息工程学院&nbsp;2018级&nbsp;闫怡凯
         </h1>
-      </div></el-footer
-    >
+      </div>
+    </el-footer>
   </el-container>
 </template>
 
 <script>
 // 引入头部组件
-import RightHeader from "./RightHeader";
+import RightHeader from './RightHeader'
 export default {
   // 注册组件
   components: {
     RightHeader,
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
